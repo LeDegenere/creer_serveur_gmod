@@ -1,37 +1,29 @@
-# 💻 Tutoriel-Installation-Pterodactyl
+# 💻 Comande pour créer un serveur GMOD sur un VPS
 
 # Installation des Prérequis 
 
 `apt update`
+
 `apt full-upgrade`
-`apt install bash curl wget sudo`
+
+`sudo apt-get install lib32gcc-s1` (Cela est nécéssaire pour pouvoir lancer SteamCMD)
+
 `apt update`
 
-# Installation du panel & Wings
-`bash <(curl -s https://pterodactyl-installer.se)`
+`sudo apt-get -y install screen` (Cela est nécéssaire pour pouvoir quitter Putty sans que le serveur GMOD s'éteingne)
 
-# Installation de Phpmyadmin:
-`cd /var/www/pterodactyl/public/ && mkdir phpmyadmin && cd phpmyadmin/ && wget https://files.phpmyadmin.net/phpMyAdmin/5.2.0/phpMyAdmin-5.2.0-all-languages.zip && unzip phpMyAdmin-5.2.0-all-languages.zip && mv phpMyAdmin-5.2.0-all-languages/* /var/www/pterodactyl/public/phpmyadmin`
+# Installation de SteamCMD
+`wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz`
 
-# Configuration de MySQL:
-`sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf`
-`service mariadb restart`
-`service mysql restart`
-`mysql`
+# Extraire le fichier SteamCMD
+`tar -xvzf steamcmd_linux.tar.gz`
 
-`CREATE DATABASE phpmyadmin DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;`
-`GRANT ALL ON phpmyadmin.* TO 'phpmyadmin'@'localhost' IDENTIFIED BY 'MOTDEPASSE';`
-`create user admin@'%' identified by 'MOTDEPASSE';`
-`grant all privileges on *.* to admin@'%' with grant option;`
-`flush privileges;`
+# Installer UFW (Le Firewall qui va permettre d'ouvir les Ports pour GMOD)
+`sudo apt-get install ufw`
 
-Générateur de mot de passe: https://www.dashlane.com/personal-password-manager/password-generator
+# Ouvrir les ports pour GMOD
+`sudo ufw allow 27015`
 
-# Configuration du Node
+`sudo ufw allow 27015/udp`
 
-`sudo nano /etc/pterodactyl/config.yml`
-
-# Informations:
-Lien de la vidéo explicative: https://www.youtube.com/watch?v=QS0GugZqoV0
-
-Pour plus d'informations direction: https://disord.gg/2cpjzjxkZr
+`sudo ufw enable`
