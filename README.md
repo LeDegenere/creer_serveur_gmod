@@ -18,12 +18,14 @@
 # Extraire le fichier SteamCMD
 `tar -xvzf steamcmd_linux.tar.gz`
 
-# Installer UFW (Le Firewall qui va permettre d'ouvir les Ports pour GMOD)
-`sudo apt-get install ufw`
+# Installer iptables (Le Firewall qui va permettre d'ouvir les Ports pour GMOD)
+`sudo apt-get install iptables-persistent`
 
 # Ouvrir les ports pour GMOD
-`sudo ufw allow 27015`
+`sudo iptables -A INPUT -p udp --dport 27015 -j ACCEPT`
 
-`sudo ufw allow 27015/udp`
+`sudo iptables -A INPUT -p udp --dport 27015:27030 -j ACCEPT`
 
-`sudo ufw enable`
+`sudo iptables -A INPUT -p tcp --dport 27015:27030 -j ACCEPT`
+
+`sudo iptables -A INPUT -p tcp --dport 27005 -j ACCEPT`
